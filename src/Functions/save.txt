@@ -1,0 +1,49 @@
+package Functions;
+
+public class Utils {
+
+    public static boolean initialCheck(Board board, Block[] blocks) {
+        int boardSize = board.getSize();
+        int sumBlockSizes = 0;
+
+        for (Block block : blocks) {
+            sumBlockSizes += block.getSize();
+        }
+
+        if (sumBlockSizes != boardSize) {
+            System.out.println("\n\nSum of block sizes isn't the same as the board size. No Solution.\n");
+            System.out.println("Waktu pencarian: 0 ms\n");
+            System.out.println("Banyak kasus ditinjau: 0\n");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public static boolean isBlockFit(Board board, Block block, int rowCoord, int colCoord) {
+        // rowCoord and colCoord start from 0
+        int[] bitmaskBoard = board.getBitmaskBoard();
+        int[] bitmaskBlock = block.getBitmaskBlock();
+        int boardCol = board.getColumn();
+        int boardRow = board.getRow();
+        int blockCol = block.getColumn();
+        int blockRow = block.getRow();
+    
+        // Check if block goes out of bounds
+        if (blockRow + rowCoord > boardRow || blockCol + colCoord > boardCol) {
+            return false;
+        } else {
+            // Shift the block left by colCoord
+            for (int i = 0; i < blockRow; i++) {
+                int shiftedBlockRow = bitmaskBlock[i] << (boardCol - blockCol - colCoord);
+    
+                // Check if the shifted block row overlaps with the board row
+                if ((bitmaskBoard[rowCoord + i] & shiftedBlockRow) != 0) {
+                    return false; // Overlap detected, block cannot be placed
+                }
+            }
+            return true; // No overlap, block fits
+        }
+    }
+
+}
