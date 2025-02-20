@@ -91,22 +91,14 @@ public class App {
             Character currentBlockID = null;
 
             while (fileScanner.hasNextLine()) {
-                String line = fileScanner.nextLine().trim();
+                String line = fileScanner.nextLine();
                 if (line.isEmpty()) continue; // Ignore empty lines
 
-                // **Validation: Ensure all characters are alphabetical**
-                for (char c : line.toCharArray()) {
-                    if (!Character.isLetter(c)) {
-                        System.out.println("Block could only be represented by alphabetical characters (A-Z).");
-                        System.exit(1);
-                    }
-                }
-
-                // **Convert lowercase to uppercase**
+                // Convert lowercase to uppercase
                 line = line.toUpperCase();
 
-                // **Detect new block**
-                char blockID = line.charAt(0);
+                // Detect new block
+                char blockID = line.replace(" ", "").charAt(0); // Ignore spaces when detecting block ID
 
                 // If encountering a new block ID, store previous block and start a new one
                 if (currentBlockID == null || currentBlockID != blockID) {
@@ -133,9 +125,9 @@ public class App {
                 int blockRows = shapeLines.size();
                 int blockCols = 0;
 
-                // Determine max width of the block based on character count
+                // Determine max width of the block based on character count (including spaces)
                 for (String s : shapeLines) {
-                    blockCols = Math.max(blockCols, s.length()); // No assumption of spaces
+                    blockCols = Math.max(blockCols, s.length());
                 }
 
                 // Convert to char array
@@ -144,7 +136,7 @@ public class App {
                 for (int i = 0; i < blockRows; i++) {
                     char[] rowChars = shapeLines.get(i).toCharArray();
                     for (int j = 0; j < blockCols; j++) {
-                        // If character exists, use it; otherwise, use space
+                        // Allow space (' ') as an empty spot in the block
                         visualBlock[i][j] = (j < rowChars.length) ? rowChars[j] : ' ';
                     }
                 }
@@ -164,7 +156,8 @@ public class App {
             }
         }
 
-        scanner.close(); // Close the scanner
+
+
 
         // checks first whether the sum of the block sizes adds up to size of the board exactly,
         // else not doing the recursion
@@ -176,6 +169,7 @@ public class App {
 
         // here's the recursion and the output part
         Utils.solve(board, blocks);
+        scanner.close(); // Close the scanner
 
         // **Test block addition**
         // board.addBlock(blocks[0], 3, 4);
