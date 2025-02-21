@@ -27,6 +27,7 @@ public class Block {
                     this.size++;
                     bitmask |= (1 << (column - c - 1));  // Set bit from right to left
                 }
+                
             }
             this.bitmaskBlock[r] = bitmask;  
         }

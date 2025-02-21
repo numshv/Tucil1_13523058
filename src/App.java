@@ -29,23 +29,20 @@ public class App {
 
             // Attempt to read and validate the file content
             try (Scanner fileScanner = new Scanner(file)) {
-                if (fileScanner.hasNextInt()) {
-                    row = fileScanner.nextInt();
-                } else {
+                if (fileScanner.hasNextInt()) row = fileScanner.nextInt();
+                else {
                     System.out.println("Invalid file format: First line must contain exactly 3 integers.");
                     continue;
                 }
 
-                if (fileScanner.hasNextInt()) {
-                    col = fileScanner.nextInt();
-                } else {
+                if (fileScanner.hasNextInt()) col = fileScanner.nextInt();
+                else {
                     System.out.println("Invalid file format: First line must contain exactly 3 integers.");
                     continue;
                 }
 
-                if (fileScanner.hasNextInt()) {
-                    P = fileScanner.nextInt();
-                } else {
+                if (fileScanner.hasNextInt()) P = fileScanner.nextInt();
+                else {
                     System.out.println("Invalid file format: First line must contain exactly 3 integers.");
                     continue;
                 }
@@ -54,16 +51,16 @@ public class App {
 
                 // **Read board type**
                 if (fileScanner.hasNextLine()) {
-                    boardType = fileScanner.nextLine().trim();
+                    boardType = fileScanner.nextLine().trim().toLowerCase();
                 } else {
                     System.out.println("Invalid file format: Missing board type.");
                     continue;
                 }
 
                 // **Validate board type**
-                if (!boardType.equals("DEFAULT")) {
-                    System.out.println("Only provides DEFAULT board type.");
-                    continue; // Restart loop to ask for another file
+                if (!boardType.equals("default") && !boardType.equals("custom")) {
+                    System.out.println("Only provides DEFAULT or CUSTOM board type.");
+                    continue;
                 }
 
                 // Successfully read valid file → Break out of loop
@@ -77,16 +74,45 @@ public class App {
         System.out.println("Row = " + row + ", Col = " + col + ", P = " + P);
         System.out.println("Board Type: " + boardType);
 
-        // Now, row, col, P are accessible
-        Board board = new Board(col, row);
-        Block[] blocks = new Block[P];
+        Board board;
+        char[][] customBoard = new char[row][col]; // For CUSTOM board
 
-        // **Process the block input**
+        // Process the input file again to parse the board & blocks
         try (Scanner fileScanner = new Scanner(file)) {
-            // Skip first two lines (N M P and DEFAULT)
+            // Skip first two lines (N M P and board type)
             fileScanner.nextLine();
             fileScanner.nextLine();
 
+            // **Handle CUSTOM board input**
+            if (boardType.equals("custom")) {
+                for (int i = 0; i < row; i++) {
+                    if (!fileScanner.hasNextLine()) {
+                        System.out.println("Invalid file format: Incomplete CUSTOM board data.");
+                        System.exit(1);
+                    }
+                    String line = fileScanner.nextLine();
+                    line = line.toUpperCase(); // Convert to uppercase
+                    char[] rowChars = line.toCharArray();
+
+                    for (int j = 0; j < col; j++) {
+                        // Ensure we do not exceed the provided row length
+                        customBoard[i][j] = (j < rowChars.length) ? rowChars[j] : ' ';
+                    }
+                }
+            }
+
+            // **Initialize the Board**
+            if (boardType.equals("default")) {
+                board = new Board(col, row);
+            } else {
+                board = new Board(col, row, customBoard);
+            }
+            board.printBoard();
+            board.printBitmaskBoard();
+            System.out.println("board size: " + board.getSize());
+            Block[] blocks = new Block[P];
+
+            // **Process the block input**
             Map<Character, List<String>> blockMap = new LinkedHashMap<>();
             Character currentBlockID = null;
 
@@ -145,43 +171,31 @@ public class App {
                 blocks[blockIndex++] = new Block(blockID, blockRows, blockCols, visualBlock);
             }
 
+            // **Print all blocks for verification**
+            for (Block block : blocks) {
+                if (block != null) {
+                    block.printBlock();
+                    System.out.println(block.getSize());
+                }
+            }
+
+            // **Check board size validation**
+            if (!Utils.initialCheck(board, blocks)) {
+                System.exit(1);
+            }
+
+            // **Solve the puzzle**
+            Utils.solve(board, blocks);
+
         } catch (FileNotFoundException e) {
             System.out.println("Unexpected error: File not found.");
         }
 
-        // **Print all blocks for verification**
-        for (Block block : blocks) {
-            if (block != null) {
-                block.printBlock();
-            }
-        }
-
-
-
-
-        // checks first whether the sum of the block sizes adds up to size of the board exactly,
-        // else not doing the recursion
-
-        if (!Utils.initialCheck(board, blocks)) {
-            System.exit(1);
-        }
-
-
-        // here's the recursion and the output part
-        Utils.solve(board, blocks);
         scanner.close(); // Close the scanner
-
-        // **Test block addition**
-        // board.addBlock(blocks[0], 3, 4);
-        // board.addBlock(blocks[1], 0, 0);
-        // board.printBoard();
-
-        // System.out.println(Utils.isBlockFit(board, blocks[0], 0, 0));
-        // System.err.println(Utils.isBlockFit(board, blocks[0], 0, 2));
-
-
     }
 }
+
+
 
 
 

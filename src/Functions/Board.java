@@ -40,6 +40,9 @@ public class Board {
     private int filledSpace, emptySpace;
 
     // Constructor
+
+    // Conso for default board
+    // Conso for default board
     public Board(int col, int row) {
         this.row = row;
         this.col = col;
@@ -48,13 +51,43 @@ public class Board {
         this.filledSpace = 0;
         this.emptySpace = this.size;
         this.bitmaskBoard = new int[row];  
-        this.visualBoard = new char[row][col]; 
+        this.visualBoard = new char[row][col];
+
 
         for (int r = 0; r < row; r++) {
             for (int c = 0; c < col; c++) {
                 this.visualBoard[r][c] = ' ';
             }
         }
+    }
+
+
+    // Conso for custom board
+    public Board(int col, int row, char[][] visualBoard) {
+        this.row = row;
+        this.col = col;
+        this.size = 0;
+        this.isComplete = false;
+        this.filledSpace = 0;
+        this.bitmaskBoard = new int[row];  
+        this.visualBoard = visualBoard; 
+
+        for (int r = 0; r < row; r++) {
+            int bitmask = 0;
+            for (int c = 0; c < col; c++) {
+                if (visualBoard[r][c] != 'X') {  
+                    this.filledSpace++;
+                    bitmask |= (1 << (col - c - 1));  // Set bit from right to left
+                }
+                else{
+                    this.visualBoard[r][c] = ' ';
+                    this.size++;
+                }
+            }
+            this.bitmaskBoard[r] = bitmask;  
+        }
+
+        this.emptySpace = this.size;
     }
 
     public void printBoard() { 
