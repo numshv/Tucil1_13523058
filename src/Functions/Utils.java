@@ -44,6 +44,7 @@ public class Utils {
         System.out.println("\nWaktu pencarian: " + (endTime - startTime) + " ms\n");
         System.out.println("Banyak kasus ditinjau: " + possibilitiesExplored + "\n");
 
+        // Output handling
         if (solved) {
             Scanner scanner = new Scanner(System.in); // Scanner untuk input keyboard
             
@@ -105,7 +106,7 @@ public class Utils {
         // Step 1: Find the first empty space (top-left priority)
         int[] emptyPos = findEmptySpace(board);
         if (emptyPos == null) {
-            return true; // All spaces filled → Solution found!
+            return true; // All spaces filled = Solution found!
         }
         int row = emptyPos[0], col = emptyPos[1];
 

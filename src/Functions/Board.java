@@ -77,7 +77,7 @@ public class Board {
             for (int c = 0; c < col; c++) {
                 if (visualBoard[r][c] != 'X') {  
                     this.filledSpace++;
-                    bitmask |= (1 << (col - c - 1));  // Set bit from right to left
+                    bitmask |= (1 << (col - c - 1));  // Set bit from right to left (set to 1)
                 }
                 else{
                     this.visualBoard[r][c] = ' ';
