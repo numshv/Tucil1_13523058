@@ -33,11 +33,11 @@ public class Utils {
         boolean solved = false;
 
         if (backtrack(board, blocks)) {
-            System.out.println("\nSolution Found!\n");
+            System.out.println("\nSolusi ditemukan!\n");
             solved = true;
             board.printBoard();
         } else {
-            System.out.println("\nNo Solution Found.\n");
+            System.out.println("\nTidak ada solusi valid.\n");
         }
 
         long endTime = System.currentTimeMillis(); // End tracking time
@@ -46,85 +46,79 @@ public class Utils {
 
         // Output handling
         if (solved) {
-            Scanner scanner = new Scanner(System.in); // Scanner untuk input keyboard
+            Scanner scanner = new Scanner(System.in); 
             
             while (true) {
                 System.out.print("Apakah anda ingin menyimpan solusi? (ya/tidak): ");
                 
                 if (!scanner.hasNextLine()) {
-                    break; // Cegah NoSuchElementException jika tidak ada input
+                    break; 
                 }
         
-                String save = scanner.nextLine().trim().toLowerCase().split(" ")[0]; // Ambil hanya kata pertama
+                String save = scanner.nextLine().trim().toLowerCase().split(" ")[0]; 
         
                 if (save.equals("ya")) {
                     System.out.print("Masukkan nama file (tanpa .txt): ");
                     
                     if (!scanner.hasNextLine()) {
-                        break; // Cegah error jika input kosong
+                        break; 
                     }
         
                     String filename = scanner.nextLine().trim();
         
-                    // Buat folder test/Solutions jika belum ada
                     File solutionFolder = new File("test/Solutions/");
                     if (!solutionFolder.exists()) {
-                        solutionFolder.mkdirs(); // Buat folder jika belum ada
+                        solutionFolder.mkdirs(); // Make the folder if not exists yet
                     }
         
                     File solutionFile = new File(solutionFolder, filename + ".txt");
         
                     try (PrintWriter writer = new PrintWriter(solutionFile)) {
-                        // Tulis isi board ke dalam file
+                        // Write the visualBoardd to the file
                         writer.println("Solusi IQ Puzzler Pro:");
                         for (char[] row : board.getVisualBoard()) {
-                            writer.println(new String(row)); // Menulis tiap baris board ke file
+                            writer.println(new String(row));
                         }
                         System.out.println("Solusi berhasil disimpan di test/Solutions/" + filename + ".txt");
                     } catch (Exception e) {
                         System.out.println("Gagal menyimpan solusi: " + e.getMessage());
                     }
         
-                    break; // Keluar dari loop setelah menyimpan file
+                    break; 
                 } 
                 else if (save.equals("tidak")) {
                     System.out.println("Solusi tidak disimpan.");
-                    break; // Keluar dari loop
+                    break; 
                 } 
                 else {
                     System.out.println("Input tidak valid. Input hanya dapat 'ya' atau 'tidak', ulang.\n");
                 }
             }
         
-            scanner.close(); // Tutup scanner setelah selesai digunakan
+            scanner.close(); 
         }
     }
 
     private static boolean backtrack(Board board, Block[] blocks) {
         possibilitiesExplored++;
 
-        // Step 1: Find the first empty space (top-left priority)
+        // Find the first empty space that's most top and most left
         int[] emptyPos = findEmptySpace(board);
         if (emptyPos == null) {
             return true; // All spaces filled = Solution found!
         }
         int row = emptyPos[0], col = emptyPos[1];
 
-        // Step 2: Try placing each unused block
+        // Try placing each unused block
         for (Block block : blocks) {
             if (!block.getIsPlaced()) { // If block is not yet placed
                 
-                // Try placing in 4 different rotations
+                // Try placing in 4 different rotations (0, 90, 180, 270)
                 for (int rotation = 0; rotation < 4; rotation++) {
                     if (isBlockFit(board, block, row, col)) {
-                        board.addBlock(block, row, col); // Place block
+                        board.addBlock(block, row, col); 
                         block.setIsPlaced(true);
 
-                        // Print board after placing block
-                        //board.printBoard();
-                        //System.out.println("Placed Block: " + block.getBlockID() + " at (" + row + ", " + col + ")");
-
-                        // Recur to place the next block
                         if (backtrack(board, blocks)) {
                             return true; // Found a solution
                         }
@@ -133,11 +127,11 @@ public class Utils {
                         board.removeBlock(block, row, col);
                         block.setIsPlaced(false);
                     }
-                    block.rotate90(); // Rotate the block
+                    block.rotate90();
                 }
             }
         }
-        return false; // No valid placement found, trigger backtracking
+        return false; 
     }
 
 
@@ -147,11 +141,11 @@ public class Utils {
         for (int r = 0; r < board.getRow(); r++) {
             for (int c = 0; c < board.getColumn(); c++) {
                 if (visualBoard[r][c] == ' ') {
-                    return new int[]{r, c}; // Return first found empty space
+                    return new int[]{r, c}; 
                 }
             }
         }
-        return null; // No empty space left, means solution found
+        return null; 
     }
 
     public static boolean isBlockFit(Board board, Block block, int rowCoord, int colCoord) {

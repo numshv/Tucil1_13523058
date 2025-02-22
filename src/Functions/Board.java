@@ -42,7 +42,6 @@ public class Board {
     // Constructor
 
     // Conso for default board
-    // Conso for default board
     public Board(int col, int row) {
         this.row = row;
         this.col = col;
@@ -91,24 +90,23 @@ public class Board {
     }
 
     public void printBoard() { 
-        System.out.println("Current Board:");
     
         for (char[] r : visualBoard) {
             StringBuilder sb = new StringBuilder();
             for (char c : r) {
                 if (c == ' ') {
-                    sb.append(" "); // Keep spaces uncolored
+                    sb.append(" "); 
                 } else {
-                    int index = c - 'A'; // Get index for ALPHABET_HEX (A=0, B=1, ..., Z=25)
+                    int index = c - 'A'; 
                     if (index >= 0 && index < ALPHABET_HEX.length) {
-                        String color = getAnsi256Color(ALPHABET_HEX[index]); // Convert hex to ANSI
-                        sb.append(color).append(c).append("\u001B[0m"); // Apply color and reset
+                        String color = getAnsi256Color(ALPHABET_HEX[index]);
+                        sb.append(color).append(c).append("\u001B[0m"); 
                     } else {
-                        sb.append(c); // Print normally if not in range
+                        sb.append(c); 
                     }
                 }
             }
-            System.out.println(sb.toString()); // Print the row
+            System.out.println(sb.toString());
         }
     }
     
@@ -130,7 +128,6 @@ public class Board {
             return (int)(((r - 8) / 10) + 232);
         }
         
-        // Calculate the nearest color index for RGB
         int rIndex = Math.min(5, (int)Math.round(r / 51.0));
         int gIndex = Math.min(5, (int)Math.round(g / 51.0));
         int bIndex = Math.min(5, (int)Math.round(b / 51.0));
@@ -152,22 +149,22 @@ public class Board {
         int blockHeight = block.getRow();       
         int blockWidth = block.getColumn();     
 
-        // 1. Shift each row of bitmaskBlock to align with board (add col offset)
+        // Shift each row of bitmaskBlock to align with board (add col offset)
         for (int i = 0; i < blockHeight; i++) {
-            int shiftedRow = blockMask[i] << (col - blockWidth - c); // Shift left to align
-            bitmaskBoard[r + i] |= shiftedRow; // 2. Add to board using OR operation
+            int shiftedRow = blockMask[i] << (col - blockWidth - c);
+            bitmaskBoard[r + i] |= shiftedRow; // Add to board using OR operation
         }
 
-        // 3. Update visualBoard
+        // Update visualBoard
         for (int i = 0; i < blockHeight; i++) {
             for (int j = 0; j < blockWidth; j++) {
                 if ((blockMask[i] & (1 << (blockWidth - j - 1))) != 0) {
-                    visualBoard[r + i][c + j] = blockID; // Set block character
+                    visualBoard[r + i][c + j] = blockID; 
                 }
             }
         }
 
-        // 4. Update filled and empty spaces
+        // Update filled and empty spaces
         this.filledSpace += block.getSize(); 
         this.emptySpace -= block.getSize();
     }
@@ -177,13 +174,13 @@ public class Board {
         int blockHeight = block.getRow();
         int blockWidth = block.getColumn();
         
-        // 1. Remove block from bitmaskBoard using XOR to clear the bits
+        // Remove block from bitmaskBoard using XOR to clear the bits
         for (int i = 0; i < blockHeight; i++) {
             int shiftedRow = blockMask[i] << (col - blockWidth - c);
-            bitmaskBoard[r + i] ^= shiftedRow; // XOR removes the placed bits
+            bitmaskBoard[r + i] ^= shiftedRow; // XOR to removes the placed bits
         }
     
-        // 2. Clear visualBoard
+        // Clear visualBoard
         for (int i = 0; i < blockHeight; i++) {
             for (int j = 0; j < blockWidth; j++) {
                 if ((blockMask[i] & (1 << (blockWidth - j - 1))) != 0) {
@@ -192,7 +189,7 @@ public class Board {
             }
         }
     
-        // 3. Update filled and empty spaces
+        // Update filled and empty spaces
         this.filledSpace -= block.getSize();
         this.emptySpace += block.getSize();
     }
