@@ -123,7 +123,7 @@ public class App {
             }
 
             if (blockMap.size() != P) {
-                System.out.println("P doesn't match the actual amount of existing blocks.");
+                System.out.println("Jumlah blok tidak sesuai dengan P");
                 System.exit(1);
             }
 
