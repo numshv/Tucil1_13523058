@@ -37,7 +37,7 @@ Program akan menggunakan algoritma brute force untuk mencoba semua kemungkinan p
 ## How To Use It
 
 ### 1. Menjalankan Program
-- Buka CLI yang tersedia pada perangkat anda (sommand prompt, shell,etc.)
+- Buka CLI yang tersedia pada perangkat anda (command prompt, shell, etc.)
 - Arahkan ke direktori utama folder project
 - Jalankan file JAR dengan perintah:
   ```bash
