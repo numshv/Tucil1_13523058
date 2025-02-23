@@ -1,4 +1,4 @@
-a<div align="center">
+<div align="center">
 <h1>IQ Puzzler Pro</h1>
 <h2>(Tugas Kecil 1 IF2211 Strategi Algoritma)</h2>
 </div>
