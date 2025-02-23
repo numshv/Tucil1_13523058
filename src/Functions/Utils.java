@@ -18,7 +18,7 @@ public class Utils {
         }
 
         if (sumBlockSizes != boardSize) {
-            System.out.println("\n\nSum of block sizes isn't the same as the board size. No Solution.\n");
+            System.out.println("\n\nJumlah titik pada blok tidak sesuai dengan jumlah space kosong di papan.\n");
             System.out.println("Waktu pencarian: 0 ms\n");
             System.out.println("Banyak kasus ditinjau: 0\n");
             return false;
