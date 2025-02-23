@@ -1,4 +1,4 @@
-<div align="center">
+a<div align="center">
 <h1>IQ Puzzler Pro</h1>
 <h2>(Tugas Kecil 1 IF2211 Strategi Algoritma)</h2>
 </div>
@@ -37,7 +37,7 @@ Program akan menggunakan algoritma brute force untuk mencoba semua kemungkinan p
 ## How To Use It
 
 ### 1. Menjalankan Program
-- Buka terminal atau Command Line Interface (CLI) pada perangkat Anda
+- Buka CLI yang tersedia pada perangkat anda (sommand prompt, shell,etc.)
 - Arahkan ke direktori utama folder project
 - Jalankan file JAR dengan perintah:
   ```bash
