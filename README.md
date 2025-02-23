@@ -1,7 +1,7 @@
 <div align="center">
 
 # IQ Puzzler Pro
-### (Tugas Kecil 1 IF2211 Strategi Algoritma)
+## (Tugas Kecil 1 IF2211 Strategi Algoritma)
 
 </div>
 
