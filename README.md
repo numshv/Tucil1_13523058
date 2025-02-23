@@ -23,7 +23,7 @@ IQ Puzzler Pro adalah permainan puzzle di mana pemain harus mengisi papan dengan
 
 Program ini meniru konsep permainan tersebut dengan menerima input berupa:
 
-- Papan dengan ukuran can bentuk tertentu.
+- Papan dengan ukuran dan bentuk tertentu.
 - Kumpulan balok puzzle dengan berbagai bentuk yang bisa diputar atau dicerminkan sebelum ditempatkan.
 
 Program akan menggunakan algoritma brute force untuk mencoba semua kemungkinan penyusunan balok hingga menemukan satu solusi yang memenuhi aturan permainan. Jika solusi ditemukan, program akan menampilkan hasilnya dengan visualisasi papan yang terisi. Jika tidak ada solusi yang mungkin, program akan memberi tahu pengguna bahwa tidak ada solusi dari kombinasi balok-balok tersebut.
